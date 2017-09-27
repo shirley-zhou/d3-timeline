@@ -17,7 +17,7 @@
 const element = document.getElementById('chart');
 const data = [{
     label: 'Name',
-    link: 'https://en.wikipedia.org/wiki/Name'
+    link: 'https://en.wikipedia.org/wiki/Name',
     data: [{
         type: TimelineChart.TYPE.POINT,
         at: new Date([2015, 1, 11]),
