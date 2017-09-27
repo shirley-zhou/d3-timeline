@@ -58,9 +58,9 @@
             var elementHeight = options.height || element.clientHeight;
 
             var margin = {
-                top: 0,
+                top: 20,
                 right: 0,
-                bottom: 20,
+                bottom: 0,
                 left: 0
             };
 
@@ -71,7 +71,7 @@
 
             var x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width]);
 
-            var xAxis = d3.svg.axis().scale(x).orient('bottom').tickSize(-height);
+            var xAxis = d3.svg.axis().scale(x).orient('top').tickSize(-height);
 
             var zoom = d3.behavior.zoom().x(x).on('zoom', zoomed);
 
@@ -81,7 +81,8 @@
 
             svg.append('rect').attr('class', 'chart-bounds').attr('x', groupWidth).attr('y', 0).attr('height', height).attr('width', width - groupWidth);
 
-            svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')').call(xAxis);
+            svg.append('g').attr('class', 'x axis') // .attr('transform', 'translate(0,' + height + ')')
+            .call(xAxis);
 
             if (options.enableLiveTimer) {
                 self.now = svg.append('line').attr('clip-path', 'url(#chart-content)').attr('class', 'vertical-marker now').attr("y1", 0).attr("y2", height);
@@ -89,15 +90,17 @@
 
             var groupHeight = height / data.length;
             var groupSection = svg.selectAll('.group-section').data(data).enter().append('line').attr('class', 'group-section').attr('x1', 0).attr('x2', width).attr('y1', function (d, i) {
-                return groupHeight * (i + 1);
+                return groupHeight * i;
             }).attr('y2', function (d, i) {
-                return groupHeight * (i + 1);
+                return groupHeight * i;
             });
 
             if (!options.hideGroupLabels) {
                 var groupLabels = svg.selectAll('.group-label').data(data).enter().append('text').attr('class', 'group-label').attr('x', 0).attr('y', function (d, i) {
                     return groupHeight * i + groupHeight / 2 + 5.5;
-                }).attr('dx', '0.5em').text(function (d) {
+                }).attr('dx', '0.5em').append('svg:a').attr('xlink:href', function (d) {
+                    return d.link;
+                }).text(function (d) {
                     return d.label;
                 });
 
@@ -118,6 +121,8 @@
                 return Math.max(options.intervalMinWidth, x(d.to) - x(d.from));
             }).attr('height', intervalBarHeight).attr('y', intervalBarMargin).attr('x', function (d) {
                 return x(d.from);
+            }).style('fill', function (d) {
+                return d.color;
             });
 
             var intervalTexts = groupIntervalItems.append('text').text(function (d) {
@@ -143,10 +148,23 @@
                     var tip = d3.tip().attr('class', 'd3-tip').html(options.tip);
                     svg.call(tip);
                     dots.on('mouseover', tip.show).on('mouseout', tip.hide);
+                    intervals.on('mouseover', tip.show).on('mouseout', tip.hide);
                 } else {
                     console.error('Please make sure you have d3.tip included as dependency (https://github.com/Caged/d3-tip)');
                 }
             }
+
+            /*
+            svg.append('g').attr('class', 'x axis') //.attr('transform', 'translate(0,' + height + ')')
+            .call(xAxis);
+
+            window.addEventListener('scroll', function () {
+                console.log('scrolling');
+                console.log(console.log(document.getElementById('chart').scrollTop));
+                var xAxis = d3.svg.axis().scale(x).orient('top').tickSize(-height);
+                svg.select('.x.axis').attr('transform', 'translate(0,' + document.getElementById('chart').scrollTop + ')').call(xAxis);
+            }, false);
+            */
 
             zoomed();
 

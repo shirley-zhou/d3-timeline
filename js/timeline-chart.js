@@ -15,9 +15,9 @@ class TimelineChart {
         let elementHeight = options.height || element.clientHeight;
 
         let margin = {
-            top: 0,
+            top: 20,
             right: 0,
-            bottom: 20,
+            bottom: 0,
             left: 0
         };
 
@@ -32,7 +32,7 @@ class TimelineChart {
 
         let xAxis = d3.svg.axis()
             .scale(x)
-            .orient('bottom')
+            .orient('top')
             .tickSize(-height);
 
         let zoom = d3.behavior.zoom()
@@ -64,7 +64,7 @@ class TimelineChart {
 
         svg.append('g')
             .attr('class', 'x axis')
-            .attr('transform', 'translate(0,' + height + ')')
+            //.attr('transform', 'translate(0,' + height + ')')
             .call(xAxis);
 
         if (options.enableLiveTimer) {
@@ -84,10 +84,10 @@ class TimelineChart {
             .attr('x1', 0)
             .attr('x2', width)
             .attr('y1', (d, i) => {
-                return groupHeight * (i + 1);
+                return groupHeight * i;
             })
             .attr('y2', (d, i) => {
-                return groupHeight * (i + 1);
+                return groupHeight * i;
             });
 
         if (!options.hideGroupLabels) {
@@ -101,6 +101,7 @@ class TimelineChart {
                     return (groupHeight * i) + (groupHeight / 2) + 5.5;
                 })
                 .attr('dx', '0.5em')
+                .append('svg:a').attr('xlink:href', (d) => d.link)
                 .text(d => d.label);
 
             let lineSection = svg.append('line').attr('x1', groupWidth).attr('x2', groupWidth).attr('y1', 0).attr('y2', height).attr('stroke', 'black');
@@ -125,7 +126,8 @@ class TimelineChart {
             .attr('width', (d) => Math.max(options.intervalMinWidth, x(d.to) - x(d.from)))
             .attr('height', intervalBarHeight)
             .attr('y', intervalBarMargin)
-            .attr('x', (d) => x(d.from));
+            .attr('x', (d) => x(d.from))
+            .style('fill', (d) => d.color);
 
         let intervalTexts = groupIntervalItems
             .append('text')
@@ -159,11 +161,24 @@ class TimelineChart {
             if (d3.tip) {
                 let tip = d3.tip().attr('class', 'd3-tip').html(options.tip);
                 svg.call(tip);
-                dots.on('mouseover', tip.show).on('mouseout', tip.hide)
+                dots.on('mouseover', tip.show).on('mouseout', tip.hide);
+                intervals.on('mouseover', tip.show).on('mouseout', tip.hide);
             } else {
                 console.error('Please make sure you have d3.tip included as dependency (https://github.com/Caged/d3-tip)');
             }
         }
+
+        /*
+        svg.append('g').attr('class', 'x axis') //.attr('transform', 'translate(0,' + height + ')') //modified
+        .call(xAxis);
+
+        window.addEventListener('scroll', function () {
+            console.log('scrolling');
+            console.log(console.log(document.getElementById('chart').scrollTop));
+            var xAxis = d3.svg.axis().scale(x).orient('top').tickSize(-height);
+            svg.select('.x.axis').attr('transform', 'translate(0,' + document.getElementById('chart').scrollTop + ')').call(xAxis);
+        }, false);
+        */
 
         zoomed();
 

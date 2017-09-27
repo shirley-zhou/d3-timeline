@@ -1,5 +1,5 @@
 {
-  "name": "d3-timeline-chart",
+  "name": "d3-timeline-chart-fixed-height",
   "version": "1.3.0",
   "description": "",
   "main": "dist/timeline-chart.js",
