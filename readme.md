@@ -8,7 +8,7 @@
 
 ## Installing
 
-`npm install d3-timeline-chart --save`
+`npm install d3-timeline-chart-fixed-height --save`
 
 ## Example
 
@@ -17,12 +17,15 @@
 const element = document.getElementById('chart');
 const data = [{
     label: 'Name',
+    link: 'https://en.wikipedia.org/wiki/Name'
     data: [{
         type: TimelineChart.TYPE.POINT,
-        at: new Date([2015, 1, 11])
+        at: new Date([2015, 1, 11]),
+        color: 'blue'
     }, {
         type: TimelineChart.TYPE.POINT,
-        at: new Date([2015, 1, 15])
+        at: new Date([2015, 1, 15]),
+        color: 'red'
     }, {
         type: TimelineChart.TYPE.POINT,
         at: new Date([2015, 3, 10])
@@ -30,7 +33,8 @@ const data = [{
         label: 'I\'m a label',
         type: TimelineChart.TYPE.INTERVAL,
         from: new Date([2015, 2, 1]),
-        to: new Date([2015, 3, 1])
+        to: new Date([2015, 3, 1]),
+        color: 'green'
     }, {
         type: TimelineChart.TYPE.POINT,
         at: new Date([2015, 6, 1])
