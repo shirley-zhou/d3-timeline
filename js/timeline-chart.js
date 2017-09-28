@@ -1,3 +1,7 @@
+import d3 from 'd3';
+import d3TipFactory from 'd3-tip';
+const d3Tip = d3TipFactory(d3);
+
 class TimelineChart {
     constructor(element, data, opts) {
         let self = this;
@@ -158,8 +162,8 @@ class TimelineChart {
             .attr('r', 5);
 
         if (options.tip) {
-            if (d3.tip) {
-                let tip = d3.tip().attr('class', 'd3-tip').html(options.tip);
+            if (d3Tip) {
+                let tip = d3Tip().attr('class', 'd3-tip').html(options.tip);
                 svg.call(tip);
                 dots.on('mouseover', tip.show).on('mouseout', tip.hide);
                 intervals.on('mouseover', tip.show).on('mouseout', tip.hide);
