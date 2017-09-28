@@ -1,7 +1,3 @@
-import d3 from 'd3';
-import d3TipFactory from 'd3-tip';
-const d3Tip = d3TipFactory(d3);
-
 class TimelineChart {
     constructor(element, data, opts) {
         let self = this;
