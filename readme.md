@@ -1,8 +1,6 @@
 # D3 TimelineChart
 
-[![Build Status](https://travis-ci.org/commodityvectors/d3-timeline.svg?branch=master)](https://travis-ci.org/commodityvectors/d3-timeline)
-
-[![NPM](https://nodei.co/npm/d3-timeline-chart.png)](https://nodei.co/npm/d3-timeline-chart-fixed-height/)
+[![NPM](https://nodei.co/npm/d3-timeline-chart-fixed-height.png)](https://nodei.co/npm/d3-timeline-chart-fixed-height/)
 
 ![Chart example](https://raw.githubusercontent.com/commodityvectors/d3-timeline/master/usage.gif)
 
